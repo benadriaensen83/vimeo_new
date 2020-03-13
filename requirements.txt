@@ -1,0 +1,6 @@
+certifi==2019.11.28
+dnspython==1.16.0
+pymongo==3.10.1
+tabulate==0.8.6
+vaderSentiment==3.2.1
+wincertstore==0.2
