@@ -22,7 +22,7 @@ def fetch_all_videos_data(page_number=1):
     response = requests.request("GET", url, headers=headers, data = payload)
 
     # parse the response fro8m to a dictionary for data handling
-    response = response.json
+    response = response.json()
 
     return response
 
