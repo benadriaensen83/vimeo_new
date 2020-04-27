@@ -1,5 +1,6 @@
 import vimeo
 from os import walk
+import requests
 
 def upload_video(file):
 
@@ -17,6 +18,7 @@ def upload_video(file):
     'description': 'The description goes here.'
   })
 
+  client.
 def folder_file_names():
 
   f = []
@@ -38,6 +40,23 @@ def folder_file_names():
   print(directories)
 
   return directories, f
+
+def create_vimeo_folder(name):
+
+  url = "https://api.vimeo.com/me/projects?user_id=112087188"
+
+  payload = 'name={}'.format(name)
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'name': '\'jef\'',
+    'Authorization': 'Bearer 7256c4503a4dc9229c8c68336c7f1932'
+  }
+
+  response = requests.request("POST", url, headers=headers, data=payload)
+
+  print(response.text.encode('utf8'))
+
+  return
 
 directories, f = folder_file_names()
 
