@@ -1,11 +1,11 @@
 import vimeo
 from os import walk
 import requests
+import math
 
 def upload_video(file):
 
   # this method interacts with the API to upload the videos
-
   client = vimeo.VimeoClient(
     token='33d0604babd6ae462168c975cb25bd23',
     key='112087188',
@@ -57,9 +57,9 @@ def create_vimeo_folder(name):
 
   return
 
-def obtain_all_folders():
+def obtain_all_folders(page_number=1):
 
-  url = "https://api.vimeo.com/me/projects?per_page=100"
+  url = "https://api.vimeo.com/me/projects?per_page=100&page={}".format(page_number)
 
   payload = {}
   headers = {
@@ -69,17 +69,49 @@ def obtain_all_folders():
   }
 
   response = requests.request("GET", url, headers=headers, data=payload)
+  response = response.json()
 
-  print(response.text.encode('utf8'))
+  return response
+
+# script runs from here
+
+# obtain a list of existing directories
+# create a list instance
+existing_dirs = []
+
+# make the API call and calculate number of pages
+data = obtain_all_folders()
+total_pages = data['total']/data['per_page']
+total_pages = total_pages
+print(total_pages)
+
+# we round the number up to the next integer (this changes the object type from Float to int)
+number_pages = math.ceil(total_pages)
+print('the total number of pages containing directory names = {}'.format(number_pages))
+
+# loop through each page to collect the data and append to the list of existing dirs
+for i in range(1, number_pages+1):
+    print('fetching page {}'.format(i))
+    data = obtain_all_folders(page_number=i)
+    data = data['data']
+    for item in data:
+      entry = item['name']
+      existing_dirs.append(entry)
+
+print ('the list of existing dirs looks as follows')
+print(existing_dirs)
 
 
-# list the files in the upload_folder
-directories, f = folder_file_names()
 
-# upload each file
-for item in f:
 
-  print ('uploading video {}'.format(item))
-  upload_video(item)
+    # file name coding scheme is respected
+    # list the files in the upload_folder, f lists the files, whereas directories is a list to generate directories (if the
 
-for item in directories:
+# for item in directory_tags:
+#
+#   directory_tags, f = folder_file_names()
+#
+#   # upload each file
+#   for item in f:
+#     print('uploading video {}'.format(item))
+#     upload_video(item)
