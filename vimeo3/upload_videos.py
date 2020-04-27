@@ -101,15 +101,25 @@ for i in range(1, number_pages+1):
 print ('the list of existing dirs looks as follows')
 print(existing_dirs)
 
+# list the files in the upload_folder, f lists the files, whereas directories is a list to generate directories (if the
+# file name coding scheme is respected
+
+directory_tags, f = folder_file_names()
+
+# here we check whether the directory tags are already in the list of existing directories. If not, we'll create them
+
+for tag in directory_tags:
+  if tag not in existing_dirs:
+    create_vimeo_folder(tag)
 
 
 
-    # file name coding scheme is respected
-    # list the files in the upload_folder, f lists the files, whereas directories is a list to generate directories (if the
+
+
 
 # for item in directory_tags:
 #
-#   directory_tags, f = folder_file_names()
+
 #
 #   # upload each file
 #   for item in f:
