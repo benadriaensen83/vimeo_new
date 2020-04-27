@@ -2,7 +2,7 @@ import vimeo
 from os import walk
 import requests
 import math
-from progressbar import ProgressBar
+import pandas as pd
 from tqdm import tqdm
 import fetch_data
 
@@ -175,13 +175,19 @@ def main():
 
   print('the list of existing directories on the Vimeo platform is as follows:')
   print(existing_dirs)
-  print('the lis of updated videos looks like this:')
+  print('the list of updated videos looks like this:')
   print(uploaded_videos)
 
   for item in uploaded_videos:
     for entry in existing_dirs:
       if item['video_dir_to_be'] == entry['name']:
         move_file_to_dir(entry['folder_id'], item['video_id'])
+
+  output = fetch_data.collect_video_data()
+  # create dataframe for output and save to csv
+  output = pd.DataFrame(output)
+  output.to_csv('hyperlink_data.csv')
+  print(output)
 
   return
 
