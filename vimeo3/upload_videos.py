@@ -178,6 +178,11 @@ def main():
   print('the lis of updated videos looks like this:')
   print(uploaded_videos)
 
+  for item in uploaded_videos:
+    for entry in existing_dirs:
+      if item['video_dir_to_be'] == entry['name']:
+        move_file_to_dir(entry['folder_id', item['video_id']])
+
   return
 
 if __name__ == '__main__':
