@@ -76,7 +76,18 @@ def obtain_all_folders(page_number=1):
 
   return response
 
-def move_file_to_dir():
+def move_file_to_dir(folder_id, video_id):
+  url = "https://api.vimeo.com/me/projects/{}/videos/{}."
+
+  payload = {}
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Authorization': 'Bearer 7256c4503a4dc9229c8c68336c7f1932'
+  }
+
+  response = requests.request("PUT", url, headers=headers, data=payload)
+
+  return response
 
   pass
 
