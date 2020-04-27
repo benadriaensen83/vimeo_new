@@ -142,13 +142,15 @@ def main():
   print(existing_files_names)
 
   # let's make a progress bar for uploading files with tqdm
-
   for item in tqdm(f):
     if not item in existing_files_names:
       print('uploading video {}'.format(item))
       upload_video(item)
     else:
       print('file {} not uploaded, as it already exists on vimeo platform'.format(item))
+
+  # now we have to rearrange our uploaded files into the created directories. for that, we need the folder and file IDs
+
 
   return
 
