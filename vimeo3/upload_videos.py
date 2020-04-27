@@ -2,6 +2,8 @@ import vimeo
 from os import walk
 import requests
 import math
+from progressbar import ProgressBar
+from tqdm import tqdm
 
 def upload_video(file):
 
@@ -53,8 +55,6 @@ def create_vimeo_folder(name):
 
   response = requests.request("POST", url, headers=headers, data=payload)
 
-  print(response.text.encode('utf8'))
-
   return
 
 def obtain_all_folders(page_number=1):
@@ -72,6 +72,9 @@ def obtain_all_folders(page_number=1):
   response = response.json()
 
   return response
+
+def move_file_to_dir():
+  pass
 
 # script runs from here
 
@@ -107,21 +110,15 @@ print(existing_dirs)
 directory_tags, f = folder_file_names()
 
 # here we check whether the directory tags are already in the list of existing directories. If not, we'll create them
-
 for tag in directory_tags:
   if tag not in existing_dirs:
     create_vimeo_folder(tag)
 
+# first, we upload the files to vimeo, then we'll assign them to the
+# let's make a progress bar for that
 
+pbar = ProgressBar()
 
-
-
-
-# for item in directory_tags:
-#
-
-#
-#   # upload each file
-#   for item in f:
-#     print('uploading video {}'.format(item))
-#     upload_video(item)
+for item in tqdm(f):
+  print('uploading video {}'.format(item))
+  upload_video(item)
