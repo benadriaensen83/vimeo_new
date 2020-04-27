@@ -181,7 +181,7 @@ def main():
   for item in uploaded_videos:
     for entry in existing_dirs:
       if item['video_dir_to_be'] == entry['name']:
-        move_file_to_dir(entry['folder_id', item['video_id']])
+        move_file_to_dir(entry['folder_id'], item['video_id'])
 
   return
 
