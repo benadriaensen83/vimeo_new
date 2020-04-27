@@ -18,7 +18,6 @@ def upload_video(file):
     'description': 'The description goes here.'
   })
 
-  client.
 def folder_file_names():
 
   f = []
@@ -58,9 +57,28 @@ def create_vimeo_folder(name):
 
   return
 
+def obtain_all_folders():
+
+  url = "https://api.vimeo.com/me/projects?per_page=100"
+
+  payload = {}
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'name': '\'jef\'',
+    'Authorization': 'Bearer 7256c4503a4dc9229c8c68336c7f1932'
+  }
+
+  response = requests.request("GET", url, headers=headers, data=payload)
+
+  print(response.text.encode('utf8'))
+
+
+# list the files in the upload_folder
 directories, f = folder_file_names()
 
+# upload each file
 for item in f:
+
   print ('uploading video {}'.format(item))
   upload_video(item)
 
