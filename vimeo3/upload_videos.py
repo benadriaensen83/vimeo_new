@@ -72,8 +72,6 @@ def obtain_all_folders(page_number=1):
   response = requests.request("GET", url, headers=headers, data=payload)
   response = response.json()
 
-  print(response)
-
   return response
 
 def move_file_to_dir(folder_id, video_id):
@@ -92,6 +90,7 @@ def move_file_to_dir(folder_id, video_id):
   pass
 
 def main():
+
   # obtain a list of existing directories
   # create a list instance
   existing_dirs = []
@@ -138,10 +137,11 @@ def main():
     entry = item['video_name']
     existing_files_names.append(entry)
 
-  print('existing fliles names are')
+  print('existing files names are')
   print(existing_files_names)
 
   # let's make a progress bar for uploading files with tqdm
+  print('executing uploads')
   for item in tqdm(f):
     if not item in existing_files_names:
       print('uploading video {}'.format(item))
@@ -151,6 +151,22 @@ def main():
 
   # now we have to rearrange our uploaded files into the created directories. for that, we need the folder and file IDs
 
+  existing_dirs = []
+  data = obtain_all_folders()
+  total_pages = data['total'] / data['per_page']
+  total_pages = total_pages
+
+  # we round the number up to the next integer (this changes the object type from Float to int)
+  number_pages = math.ceil(total_pages)
+  print('the total number of pages containing directory names = {}'.format(number_pages))
+
+  for i in range(1, number_pages+1):
+      print('fetching page {}'.format(i))
+      data = obtain_all_folders(page_number=i)
+      data = data['data']
+      for item in data:
+        entry = {'name': item['name'], 'folder_id' : item['uri']}
+        existing_dirs.append(entry)
 
   return
 
