@@ -4,6 +4,7 @@ import requests
 import math
 from progressbar import ProgressBar
 from tqdm import tqdm
+import fetch_data
 
 def upload_video(file):
 
@@ -32,7 +33,7 @@ def folder_file_names():
     directory = item.split(' ')[0]
     directories.append(directory)
 
-  print('identified files are as follows:')
+  print('identified files for upload are as follows:')
   print(f)
 
 
@@ -71,54 +72,73 @@ def obtain_all_folders(page_number=1):
   response = requests.request("GET", url, headers=headers, data=payload)
   response = response.json()
 
+  print(response)
+
   return response
 
 def move_file_to_dir():
   pass
 
-# script runs from here
+def main():
+  # obtain a list of existing directories
+  # create a list instance
+  existing_dirs = []
 
-# obtain a list of existing directories
-# create a list instance
-existing_dirs = []
+  # make the API call and calculate number of pages
+  data = obtain_all_folders()
+  total_pages = data['total']/data['per_page']
+  total_pages = total_pages
 
-# make the API call and calculate number of pages
-data = obtain_all_folders()
-total_pages = data['total']/data['per_page']
-total_pages = total_pages
-print(total_pages)
+  # we round the number up to the next integer (this changes the object type from Float to int)
+  number_pages = math.ceil(total_pages)
+  print('the total number of pages containing directory names = {}'.format(number_pages))
 
-# we round the number up to the next integer (this changes the object type from Float to int)
-number_pages = math.ceil(total_pages)
-print('the total number of pages containing directory names = {}'.format(number_pages))
+  # loop through each page to collect the data and append to the list of existing dirs
+  for i in range(1, number_pages+1):
+      print('fetching page {}'.format(i))
+      data = obtain_all_folders(page_number=i)
+      data = data['data']
+      for item in data:
+        entry = item['name']
+        existing_dirs.append(entry)
 
-# loop through each page to collect the data and append to the list of existing dirs
-for i in range(1, number_pages+1):
-    print('fetching page {}'.format(i))
-    data = obtain_all_folders(page_number=i)
-    data = data['data']
-    for item in data:
-      entry = item['name']
-      existing_dirs.append(entry)
+  print ('the list of existing dirs looks as follows')
+  print(existing_dirs)
 
-print ('the list of existing dirs looks as follows')
-print(existing_dirs)
+  # list the files in the upload_folder, f lists the files, whereas directories is a list to generate directories (if the
+  # file name coding scheme is respected
 
-# list the files in the upload_folder, f lists the files, whereas directories is a list to generate directories (if the
-# file name coding scheme is respected
+  directory_tags, f = folder_file_names()
 
-directory_tags, f = folder_file_names()
+  # here we check whether the directory tags are already in the list of existing directories. If not, we'll create them
+  for tag in directory_tags:
+    if tag not in existing_dirs:
+      create_vimeo_folder(tag)
 
-# here we check whether the directory tags are already in the list of existing directories. If not, we'll create them
-for tag in directory_tags:
-  if tag not in existing_dirs:
-    create_vimeo_folder(tag)
+  # first, we upload the files to vimeo, then we'll assign them to the folders. We identify a list of existing files, to
+  # avoid duplicate uploads. We can easily copy the script from the fetch_data.py script
+  existing_files = fetch_data.collect_video_data()
 
-# first, we upload the files to vimeo, then we'll assign them to the
-# let's make a progress bar for that
+  # we create a list to populate with all of the filenames
+  existing_files_names = []
 
-pbar = ProgressBar()
+  for item in existing_files:
+    entry = item['video_name']
+    existing_files_names.append(entry)
 
-for item in tqdm(f):
-  print('uploading video {}'.format(item))
-  upload_video(item)
+  print('existing fliles names are')
+  print(existing_files_names)
+
+  # let's make a progress bar for uploading files with tqdm
+
+  for item in tqdm(f):
+    if not item in existing_files_names:
+      print('uploading video {}'.format(item))
+      upload_video(item)
+    else:
+      print('file {} not uploaded, as it already exists on vimeo platform'.format(item))
+
+  return
+
+if __name__ == '__main__':
+    main()

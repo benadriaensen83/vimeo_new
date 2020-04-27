@@ -46,34 +46,40 @@ def collect_and_structure_data(response, number_pages):
     for i in range(number_pages):
         pass
 
+def collect_video_data():
 
+    data = fetch_all_videos_data()
+    total_pages = fetch_total_page_numbers(data)
 
+    # creates an empty list for data output
 
-data = fetch_all_videos_data()
-total_pages = fetch_total_page_numbers(data)
+    output = []
 
-# creates an empty list for data output
+    # here we create a loop to collect the data from all pages
+    for i in range(1, total_pages+1):
+        print ('fetching page {}'.format(i))
+        data = fetch_all_videos_data(page_number=i)
 
-output = []
+        data = data['data']
 
-# here we create a loop to collect the data from all pages
-for i in range(1, total_pages+1):
-    print ('fetching page {}'.format(i))
-    data = fetch_all_videos_data(page_number=i)
+        for i in range(len(data)):
+            entry= {'video_name': data[i]['name'],
+             'video_uri': data[i]['uri'],
+             'embed_link': data[i]['embed']['html']
+             }
 
-    data = data['data']
+            output.append(entry)
 
-    for i in range(len(data)):
-        entry= {'video_name': data[i]['name'],
-         'video_uri': data[i]['uri'],
-         'embed_link': data[i]['embed']['html']
-         }
+    return output
 
-        output.append(entry)
+def main():
+    output = collect_video_data()
+    # create dataframe for output and save to csv
+    output = pd.DataFrame (output)
+    output.to_csv('hyperlink_data.csv')
+    print(output)
 
-# create dataframe for output and save to csv
-output = pd.DataFrame (output)
-output.to_csv('hyperlink_data.csv')
-print(output)
+if __name__ == '__main__':
+    main()
 
 
