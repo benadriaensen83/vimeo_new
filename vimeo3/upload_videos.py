@@ -77,7 +77,7 @@ def obtain_all_folders(page_number=1):
   return response
 
 def move_file_to_dir(folder_id, video_id):
-  url = "https://api.vimeo.com/me/projects/{}/videos/{}."
+  url = "https://api.vimeo.com/me/projects/{}/videos/{}".format(folder_id, video_id)
 
   payload = {}
   headers = {
