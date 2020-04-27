@@ -20,6 +20,7 @@ def upload_video(file):
     'name': file,
     'description': 'The description goes here.'
   })
+  return uri
 
 def folder_file_names():
 
@@ -140,12 +141,16 @@ def main():
   print('existing files names are')
   print(existing_files_names)
 
+  uploaded_videos = []
+
   # let's make a progress bar for uploading files with tqdm
   print('executing uploads')
   for item in tqdm(f):
     if not item in existing_files_names:
       print('uploading video {}'.format(item))
-      upload_video(item)
+      data = upload_video(item)
+      entry = {'video_id': data.rsplit('/')[-1], 'video_name':item, 'video_dir_to_be': item.split(' ')[0]}
+      uploaded_videos.append(entry)
     else:
       print('file {} not uploaded, as it already exists on vimeo platform'.format(item))
 
@@ -167,6 +172,7 @@ def main():
         entry = {'name': item['name'], 'folder_id' : item['uri'].rsplit('/')[-1]}
         existing_dirs.append(entry)
   print(existing_dirs)
+  print(uploaded_videos)
 
   return
 
