@@ -150,7 +150,6 @@ def main():
       print('file {} not uploaded, as it already exists on vimeo platform'.format(item))
 
   # now we have to rearrange our uploaded files into the created directories. for that, we need the folder and file IDs
-
   existing_dirs = []
   data = obtain_all_folders()
   total_pages = data['total'] / data['per_page']
@@ -165,8 +164,9 @@ def main():
       data = obtain_all_folders(page_number=i)
       data = data['data']
       for item in data:
-        entry = {'name': item['name'], 'folder_id' : item['uri']}
+        entry = {'name': item['name'], 'folder_id' : item['uri'].rsplit('/')[-1]}
         existing_dirs.append(entry)
+  print(existing_dirs)
 
   return
 
