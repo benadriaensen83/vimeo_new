@@ -164,6 +164,7 @@ def main():
   number_pages = math.ceil(total_pages)
   print('the total number of pages containing directory names = {}'.format(number_pages))
 
+  # here we list the existing video directories again, after the new ones were added (if applicable)
   for i in range(1, number_pages+1):
       print('fetching page {}'.format(i))
       data = obtain_all_folders(page_number=i)
@@ -171,7 +172,10 @@ def main():
       for item in data:
         entry = {'name': item['name'], 'folder_id' : item['uri'].rsplit('/')[-1]}
         existing_dirs.append(entry)
+
+  print('the list of existing directories on the Vimeo platform is as follows:')
   print(existing_dirs)
+  print('the lis of updated videos looks like this:')
   print(uploaded_videos)
 
   return
