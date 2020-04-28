@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="94b8320e-e058-4635-a655-7f87614061e8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../redditcrypto" beforeDir="false" afterPath="$PROJECT_DIR$/../redditcrypto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vimeo_final/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vimeo_final/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vimeo_new/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../vimeo_new/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vimeo_upload" beforeDir="false" afterPath="$PROJECT_DIR$/../vimeo_upload" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1587756289519</updated>
       <workItem from="1587756291377" duration="556000" />
+      <workItem from="1588100130169" duration="325000" />
     </task>
     <servers />
   </component>
